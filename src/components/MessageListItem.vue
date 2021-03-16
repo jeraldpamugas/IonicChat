@@ -1,29 +1,48 @@
 <template>
-  <ion-item v-if="message" :routerLink="'/message/' + message.id" :detail="false" class="list-item">
-    <div slot="start" :class="!message.read ? 'dot dot-unread' : 'dot'"></div>
-    <ion-label class="ion-text-wrap">
+  <ion-item
+    v-if="message"
+    :routerLink="'/message/' + message.id"
+    :detail="false"
+    class="list-item"
+  >
+    <div class="avatar" slot="start">
+      <img
+        src="https://www.computerhope.com/jargon/r/random-dice.jpg"
+        alt="Avatar"
+      />
+    </div>
+    <ion-label
+      class="ion-text-wrap"
+      :class="message.isRead ? '' : 'font-weight-bold'"
+    >
       <h2>
-        {{ message.fromName }}
+        {{ message.from }}
         <span class="date">
-          <ion-note>{{ message.date }}</ion-note>
-          <ion-icon :icon="chevronForward" size="small" v-if="isIos()"></ion-icon>
+          <ion-note>{{ message.dateSent }}</ion-note>
+          <ion-icon
+            :icon="chevronForward"
+            size="small"
+            v-if="isIos()"
+          ></ion-icon>
         </span>
       </h2>
-      <h3>{{ message.subject }}</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      <p v-if="message.message == '-'">
+        <i>(attachment)</i>
+      </p>
+      <p v-else>
+        {{ message.message }}
       </p>
     </ion-label>
   </ion-item>
 </template>
 
 <script lang="ts">
-import { IonIcon, IonItem, IonLabel, IonNote } from '@ionic/vue';
-import { chevronForward } from 'ionicons/icons';
-import { defineComponent } from 'vue';
+import { IonIcon, IonItem, IonLabel, IonNote } from "@ionic/vue";
+import { chevronForward } from "ionicons/icons";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'MessageListItem',
+  name: "MessageListItem",
   components: {
     IonIcon,
     IonItem,
@@ -36,12 +55,15 @@ export default defineComponent({
   methods: {
     isIos: () => {
       const win = window as any;
-      return win && win.Ionic && win.Ionic.mode === 'ios';
-    }
+      return win && win.Ionic && win.Ionic.mode === "ios";
+    },
   },
   data() {
-    return { chevronForward }
-  }
+    return { chevronForward };
+  },
+  mounted() {
+    // console.log(this.message);
+  },
 });
 </script>
 
@@ -56,7 +78,7 @@ export default defineComponent({
   margin-bottom: 12px;
 }
 
-.list-item  h2 {
+.list-item h2 {
   font-weight: 600;
   margin: 0;
 }
@@ -99,5 +121,14 @@ export default defineComponent({
 
 .list-item .dot-unread {
   background: var(--ion-color-primary);
+}
+
+.avatar {
+  height: 40px;
+  width: 40px;
+  margin: 5px;
+}
+.avatar img {
+  border-radius: 50%;
 }
 </style>
